@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>hiragana.js</title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/base.css" />
+        <script src="hiragana.js"></script>
+        <script src="ZeroClipboard.min.js"></script>
+    </head>
+    <body class="container">
+        <h1>hiragana.js</h1>
+        <h2>A simple web-based IME</h2>
+        <button id="copy" data-clipboard-target="ime-editor" data-clipboard-text="default">Copy</button>
+        <textarea id="ime-editor" data-ime="hiragana" class="input-block-level" rows="10"></textarea>
+        <p>Type something in the area above! Try "daisuki anata" if you can't think of something to say.</p>
+        <p>Want this on your site? It's <a href="https://github.com/SirCmpwn/hiragana.js">open-source</a> and easy to use.
+        Check out how easy it is to use:</p>
+<pre>
+&lt;input type="text" data-ime="hiragana" /&gt;
+&lt;script type="text/javascript"&gt;ime.enable()&lt;/script&gt;
+</pre>
+        <script type="text/javascript">
+            ime.enable();
+            document.getElementById("ime-editor").focus();
+            var clip = new ZeroClipboard(document.getElementById("copy-button"), {
+                moviePath: "ZeroClipboard.swf"
+            }); 
+        </script>
+    </body>
+</html>

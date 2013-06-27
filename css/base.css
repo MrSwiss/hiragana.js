@@ -1,0 +1,8 @@
+.container {
+    position: relative;
+}
+
+#copy {
+    right: 0;
+    position: absolute;
+}
