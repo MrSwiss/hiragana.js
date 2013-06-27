@@ -172,6 +172,7 @@ var ime = {
         hiragana["cc"] = "っc";
         hiragana["pp"] = "っp";
         hiragana["ss"] = "っs";
+        hiragana["nn"] = "ん";
 
         var elements = getAllElementsWithAttribute("data-ime");
         for (var i = 0; i < elements.length; i++) {
