@@ -2,7 +2,9 @@
 
 This is a simple Javascript library that provides an IME for text boxes on your websites.
 
-[Live Demo](http://sircmpwn.github.io/hiragana.js)
+[Live Demo](http://drewdevault.com/hiragana.js)
+
+[Download hiragana.min.js](https://drewdevault.com/hiragana.js/hiragana.min.js)
 
 ## Usage
 
