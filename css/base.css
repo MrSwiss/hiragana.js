@@ -6,3 +6,12 @@
     right: 0;
     position: absolute;
 }
+
+#copy.zeroclipboard-is-hover {
+    text-decoration: none;
+    background-position: 0 -15px;
+    -webkit-transition: background-position 0.1s linear;
+    -moz-transition: background-position 0.1s linear;
+    -o-transition: background-position 0.1s linear;
+    transition: background-position 0.1s linear;
+}
