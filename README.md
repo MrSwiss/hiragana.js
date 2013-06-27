@@ -2,7 +2,7 @@
 
 This is a simple Javascript library that provides an IME for text boxes on your websites.
 
-[Live Demo](http://sircmpwn.github.io/hirigana.js)
+[Live Demo](http://sircmpwn.github.io/hiragana.js)
 
 Its usage is simple: add `data-ime="hiragana"` to any text box or textarea you want the IME to
 operate on, then later call `ime.enable()`. Here's an example:
