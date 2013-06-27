@@ -2,6 +2,7 @@ var ime = {
     enable: function(settings) {
         var hiragana = {};
         var letters = "abcdefghijklmnopqrstuvwxyz";
+        var vowels = "aiueo";
         var wideSpaces = true;
         if (typeof settings != 'undefined') {
             if (settings.wideSpaces === false) {
@@ -23,20 +24,30 @@ var ime = {
 
         var handleInput = function(e) {
             var target = e.target;
+            var character = String.fromCharCode(e.charCode);
             if (typeof target.dataset.next == 'undefined') {
                 target.dataset.next = '';
             }
-            if (wideSpaces && String.fromCharCode(e.charCode) == ' ') {
+            if (wideSpaces && character == ' ') {
                 e.preventDefault();
                 target.value += '　'; // wide space
                 target.dataset.next = '';
                 return;
             }
-            if (letters.indexOf(String.fromCharCode(e.charCode).toLowerCase()) == -1) {
+            if (letters.indexOf(character.toLowerCase()) == -1) {
                 target.dataset.next = '';
                 return;
             }
-            target.dataset.next += String.fromCharCode(e.charCode);
+            target.dataset.next += character;
+            if (target.dataset.next == 'n' && vowels.indexOf(character) == -1) { // Special case
+                e.preventDefault();
+                target.value = target.value.substring(0, target.value.length - (target.dataset.next.length - 1));
+                target.value += "ん";
+                if (character != 'n') {
+                    target.value += character;
+                }
+                return;
+            }
             var match = hiragana[target.dataset.next];
             if (typeof match != 'undefined') {
                 e.preventDefault();
