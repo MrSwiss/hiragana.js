@@ -4,7 +4,7 @@ This is a simple Javascript library that provides an IME for text boxes on your 
 
 [Live Demo](http://drewdevault.com/hiragana.js)
 
-[Download hiragana.min.js](https://drewdevault.com/hiragana.js/hiragana.min.js)
+[Download hiragana.min.js](http://drewdevault.com/hiragana.js/hiragana.min.js)
 
 ## Usage
 
