@@ -39,7 +39,7 @@ var ime = {
             var start = e.selectionStart;
             var end = e.selectionEnd;
             e.value = e.value.substring(0, start) + v + e.value.substring(end, e.value.length);
-            e.selectionStart = start + 1;
+            e.selectionStart = start + v.length;
             e.selectionEnd = e.selectionStart;
         }
 
