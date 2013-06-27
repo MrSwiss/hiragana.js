@@ -12,7 +12,7 @@ var ime = {
 
         var handleKeyUp = function(e) {
             var target = e.target;
-            if (e.keyCode == 8) {
+            if (e.keyCode == 8) { // Backspace
                 if (typeof target.dataset.next == 'undefined') {
                     target.dataset.next = '';
                 }
@@ -20,17 +20,41 @@ var ime = {
                     target.dataset.next = target.dataset.next.substring(0, target.dataset.next.length - 1);
                 }
             }
+            if (e.keyCode == 46) { // Delete
+                target.dataset.next = '';
+            }
+        }
+
+        var removeBeforeCursor = function(e, v) {
+            // TODO: IE Support
+            var start = e.selectionStart;
+            var end = e.selectionEnd;
+            e.value = e.value.substring(0, start - (v.length - 1)) + e.value.substring(end, e.value.length);
+            e.selectionStart = start - v.length + 1;
+            e.selectionEnd = e.selectionStart;
+        }
+
+        var insertAtCursor = function(e, v) {
+            // TODO: IE Support
+            var start = e.selectionStart;
+            var end = e.selectionEnd;
+            e.value = e.value.substring(0, start) + v + e.value.substring(end, e.value.length);
+            e.selectionStart = start + 1;
+            e.selectionEnd = e.selectionStart;
         }
 
         var handleInput = function(e) {
             var target = e.target;
+            if (target.selectionStart != target.selectionEnd) {
+                return;
+            }
             var character = String.fromCharCode(e.charCode);
             if (typeof target.dataset.next == 'undefined') {
                 target.dataset.next = '';
             }
             if (wideSpaces && character == ' ') {
                 e.preventDefault();
-                target.value += '　'; // wide space
+                insertAtCursor(target, '　'); // wide space
                 target.dataset.next = '';
                 return;
             }
@@ -39,20 +63,11 @@ var ime = {
                 return;
             }
             target.dataset.next += character;
-            if (target.dataset.next == 'n' && vowels.indexOf(character) == -1) { // Special case
-                e.preventDefault();
-                target.value = target.value.substring(0, target.value.length - (target.dataset.next.length - 1));
-                target.value += "ん";
-                if (character != 'n') {
-                    target.value += character;
-                }
-                return;
-            }
             var match = hiragana[target.dataset.next];
             if (typeof match != 'undefined') {
                 e.preventDefault();
-                target.value = target.value.substring(0, target.value.length - (target.dataset.next.length - 1));
-                target.value += match;
+                removeBeforeCursor(target, target.dataset.next);
+                insertAtCursor(target, match);
                 if (letters.indexOf(match.charAt(match.length - 1)) != -1) {
                     // Geminite consonant
                     target.dataset.next = match.charAt(match.length - 1);
