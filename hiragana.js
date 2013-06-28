@@ -1,7 +1,27 @@
 var ime = {
     enable: function(settings) {
-        var hiragana = {};
+        // Mapping provider
+        var createMapper = function() {
+            var keys = [];
+            var values = [];
+            this.map = function(key, value) {
+                keys.push(key.toLowerCase());
+                values.push(value);
+            };
+            this.match = function(value) {
+                value = value.toLowerCase();
+                for (var i = 0; i < keys.length; i++) {
+                    if (keys[i] == value)
+                        return values[i];
+                }
+                return null;
+            };
+            return this;
+        };
+
+        var mapper = createMapper();
         var letters = "abcdefghijklmnopqrstuvwxyz";
+        var consonants = "bcdfghjklmnpqrstvwxyz";
         var vowels = "aiueo";
         var wideSpaces = true;
         if (typeof settings != 'undefined') {
@@ -63,8 +83,8 @@ var ime = {
                 return;
             }
             target.dataset.next += character;
-            var match = hiragana[target.dataset.next];
-            if (typeof match != 'undefined') {
+            var match = mapper.match(target.dataset.next);
+            if (match != null) {
                 e.preventDefault();
                 removeBeforeCursor(target, target.dataset.next);
                 insertAtCursor(target, match);
@@ -79,142 +99,145 @@ var ime = {
         }
         
         var getAllElementsWithAttribute = function(attribute) {
-          var matchingElements = [];
-          var allElements = document.getElementsByTagName('*');
-          for (var i = 0; i < allElements.length; i++) {
-            if (allElements[i].getAttribute(attribute)) {
-              matchingElements.push(allElements[i]);
+        var matchingElements = [];
+        var allElements = document.getElementsByTagName('*');
+            for (var i = 0; i < allElements.length; i++) {
+                if (allElements[i].getAttribute(attribute)) {
+                    matchingElements.push(allElements[i]);
+                }
             }
-          }
-          return matchingElements;
+            return matchingElements;
         }
 
         // Map characters
-        hiragana["a"] = "あ";
-        hiragana["i"] = "い";
-        hiragana["u"] = "う";
-        hiragana["e"] = "え";
-        hiragana["o"] = "お";
-        hiragana["ka"] = "か";
-        hiragana["ki"] = "き";
-        hiragana["ku"] = "く";
-        hiragana["ke"] = "け";
-        hiragana["ko"] = "こ";
-        hiragana["sa"] = "さ";
-        hiragana["shi"] = "し";
-        hiragana["su"] = "す";
-        hiragana["se"] = "せ";
-        hiragana["so"] = "そ";
-        hiragana["ta"] = "た";
-        hiragana["chi"] = "ち";
-        hiragana["tsu"] = "つ";
-        hiragana["te"] = "て";
-        hiragana["to"] = "と";
-        hiragana["na"] = "な";
-        hiragana["ni"] = "に";
-        hiragana["nu"] = "ぬ";
-        hiragana["ne"] = "ね";
-        hiragana["no"] = "の";
-        hiragana["ha"] = "は";
-        hiragana["hi"] = "ひ";
-        hiragana["fu"] = "ふ";
-        hiragana["he"] = "へ";
-        hiragana["ho"] = "ほ";
-        hiragana["ma"] = "ま";
-        hiragana["mi"] = "み";
-        hiragana["mu"] = "む";
-        hiragana["me"] = "め";
-        hiragana["mo"] = "も";
-        hiragana["ya"] = "や";
-        hiragana["yu"] = "ゆ";
-        hiragana["yo"] = "よ";
-        hiragana["ra"] = "ら";
-        hiragana["ri"] = "り";
-        hiragana["ru"] = "る";
-        hiragana["re"] = "れ";
-        hiragana["ro"] = "ろ";
-        hiragana["wa"] = "わ";
-        hiragana["wo"] = "を";
-        hiragana["ga"] = "が";
-        hiragana["gi"] = "ぎ";
-        hiragana["gu"] = "ぐ";
-        hiragana["ge"] = "げ";
-        hiragana["go"] = "ご";
-        hiragana["za"] = "ざ";
-        hiragana["ji"] = "じ";
-        hiragana["zu"] = "ず";
-        hiragana["ze"] = "ぜ";
-        hiragana["zo"] = "ぞ";
-        hiragana["da"] = "だ";
-        hiragana["de"] = "で";
-        hiragana["do"] = "ど";
-        hiragana["ba"] = "ば";
-        hiragana["bi"] = "び";
-        hiragana["bu"] = "ぶ";
-        hiragana["be"] = "べ";
-        hiragana["bo"] = "ぼ";
-        hiragana["pa"] = "ぱ";
-        hiragana["pi"] = "ぴ";
-        hiragana["pu"] = "ぷ";
-        hiragana["pe"] = "ぺ";
-        hiragana["po"] = "ぽ";
-        hiragana["hu"] = "ふ";
-        hiragana["tu"] = "つ";
-        hiragana["si"] = "し";
-        hiragana["ti"] = "ち";
-        hiragana["kya"] = "きゃ";
-        hiragana["kyu"] = "きゅ";
-        hiragana["kyo"] = "きょ";
-        hiragana["sha"] = "しゃ";
-        hiragana["shu"] = "しゅ";
-        hiragana["sho"] = "しょ";
-        hiragana["cha"] = "ちゃ";
-        hiragana["chu"] = "ちゅ";
-        hiragana["cho"] = "ちょ";
-        hiragana["nya"] = "にゃ";
-        hiragana["nyu"] = "にゅ";
-        hiragana["nyo"] = "にょ";
-        hiragana["hya"] = "ひゃ";
-        hiragana["hyu"] = "ひゅ";
-        hiragana["hyo"] = "ひょ";
-        hiragana["mya"] = "みゃ";
-        hiragana["myu"] = "みゅ";
-        hiragana["myo"] = "みょ";
-        hiragana["rya"] = "りゃ";
-        hiragana["ryu"] = "りゅ";
-        hiragana["ryo"] = "りょ";
-        hiragana["gya"] = "ぎゃ";
-        hiragana["gyu"] = "ぎゅ";
-        hiragana["gyo"] = "ぎょ";
-        hiragana["ja"] = "じゃ";
-        hiragana["ju"] = "じゅ";
-        hiragana["jo"] = "じょ";
-        hiragana["bya"] = "びゃ";
-        hiragana["byu"] = "びゅ";
-        hiragana["byo"] = "びょ";
-        hiragana["pya"] = "ぴゃ";
-        hiragana["pyu"] = "ぴゅ";
-        hiragana["pyo"] = "ぴょ";
-        hiragana["xyu"] = "っ";
-        hiragana["nn"] = "ん";
-        hiragana["rr"] = "っr";
-        hiragana["tt"] = "っt";
-        hiragana["kk"] = "っk";
-        hiragana["cc"] = "っc";
-        hiragana["pp"] = "っp";
-        hiragana["ss"] = "っs";
-        hiragana["ww"] = "っw";
-        hiragana["ss"] = "っy";
-        hiragana["dd"] = "っd";
-        hiragana["ff"] = "っf";
-        hiragana["gg"] = "っg";
-        hiragana["hh"] = "っh";
-        hiragana["jj"] = "っj";
-        hiragana["zz"] = "っz";
-        hiragana["xx"] = "っx";
-        hiragana["vv"] = "っv";
-        hiragana["bb"] = "っb";
-        hiragana["mm"] = "っm";
+        mapper.map('a', 'あ');
+        mapper.map('i', 'い');
+        mapper.map('u', 'う');
+        mapper.map('e', 'え');
+        mapper.map('o', 'お');
+        mapper.map('ka', 'か');
+        mapper.map('ki', 'き');
+        mapper.map('ku', 'く');
+        mapper.map('ke', 'け');
+        mapper.map('ko', 'こ');
+        mapper.map('sa', 'さ');
+        mapper.map('shi', 'し');
+        mapper.map('su', 'す');
+        mapper.map('se', 'せ');
+        mapper.map('so', 'そ');
+        mapper.map('ta', 'た');
+        mapper.map('chi', 'ち');
+        mapper.map('tsu', 'つ');
+        mapper.map('te', 'て');
+        mapper.map('to', 'と');
+        mapper.map('na', 'な');
+        mapper.map('ni', 'に');
+        mapper.map('nu', 'ぬ');
+        mapper.map('ne', 'ね');
+        mapper.map('no', 'の');
+        mapper.map('ha', 'は');
+        mapper.map('hi', 'ひ');
+        mapper.map('fu', 'ふ');
+        mapper.map('he', 'へ');
+        mapper.map('ho', 'ほ');
+        mapper.map('ma', 'ま');
+        mapper.map('mi', 'み');
+        mapper.map('mu', 'む');
+        mapper.map('me', 'め');
+        mapper.map('mo', 'も');
+        mapper.map('ya', 'や');
+        mapper.map('yu', 'ゆ');
+        mapper.map('yo', 'よ');
+        mapper.map('ra', 'ら');
+        mapper.map('ri', 'り');
+        mapper.map('ru', 'る');
+        mapper.map('re', 'れ');
+        mapper.map('ro', 'ろ');
+        mapper.map('wa', 'わ');
+        mapper.map('wo', 'を');
+        mapper.map('ga', 'が');
+        mapper.map('gi', 'ぎ');
+        mapper.map('gu', 'ぐ');
+        mapper.map('ge', 'げ');
+        mapper.map('go', 'ご');
+        mapper.map('za', 'ざ');
+        mapper.map('ji', 'じ');
+        mapper.map('zu', 'ず');
+        mapper.map('ze', 'ぜ');
+        mapper.map('zo', 'ぞ');
+        mapper.map('da', 'だ');
+        mapper.map('de', 'で');
+        mapper.map('do', 'ど');
+        mapper.map('ba', 'ば');
+        mapper.map('bi', 'び');
+        mapper.map('bu', 'ぶ');
+        mapper.map('be', 'べ');
+        mapper.map('bo', 'ぼ');
+        mapper.map('pa', 'ぱ');
+        mapper.map('pi', 'ぴ');
+        mapper.map('pu', 'ぷ');
+        mapper.map('pe', 'ぺ');
+        mapper.map('po', 'ぽ');
+        mapper.map('hu', 'ふ');
+        mapper.map('tu', 'つ');
+        mapper.map('si', 'し');
+        mapper.map('ti', 'ち');
+        mapper.map('kya', 'きゃ');
+        mapper.map('kyu', 'きゅ');
+        mapper.map('kyo', 'きょ');
+        mapper.map('sha', 'しゃ');
+        mapper.map('shu', 'しゅ');
+        mapper.map('sho', 'しょ');
+        mapper.map('cha', 'ちゃ');
+        mapper.map('chu', 'ちゅ');
+        mapper.map('cho', 'ちょ');
+        mapper.map('nya', 'にゃ');
+        mapper.map('nyu', 'にゅ');
+        mapper.map('nyo', 'にょ');
+        mapper.map('hya', 'ひゃ');
+        mapper.map('hyu', 'ひゅ');
+        mapper.map('hyo', 'ひょ');
+        mapper.map('mya', 'みゃ');
+        mapper.map('myu', 'みゅ');
+        mapper.map('myo', 'みょ');
+        mapper.map('rya', 'りゃ');
+        mapper.map('ryu', 'りゅ');
+        mapper.map('ryo', 'りょ');
+        mapper.map('gya', 'ぎゃ');
+        mapper.map('gyu', 'ぎゅ');
+        mapper.map('gyo', 'ぎょ');
+        mapper.map('ja', 'じゃ');
+        mapper.map('ju', 'じゅ');
+        mapper.map('jo', 'じょ');
+        mapper.map('bya', 'びゃ');
+        mapper.map('byu', 'びゅ');
+        mapper.map('byo', 'びょ');
+        mapper.map('pya', 'ぴゃ');
+        mapper.map('pyu', 'ぴゅ');
+        mapper.map('pyo', 'ぴょ');
+        mapper.map('xyu', 'っ');
+        mapper.map('rr', 'っr');
+        mapper.map('tt', 'っt');
+        mapper.map('kk', 'っk');
+        mapper.map('cc', 'っc');
+        mapper.map('pp', 'っp');
+        mapper.map('ss', 'っs');
+        mapper.map('ww', 'っw');
+        mapper.map('ss', 'っy');
+        mapper.map('dd', 'っd');
+        mapper.map('ff', 'っf');
+        mapper.map('gg', 'っg');
+        mapper.map('hh', 'っh');
+        mapper.map('jj', 'っj');
+        mapper.map('zz', 'っz');
+        mapper.map('xx', 'っx');
+        mapper.map('vv', 'っv');
+        mapper.map('bb', 'っb');
+        mapper.map('mm', 'っm');
+        mapper.map('nn', 'ん');
+        for (var i = 0; i < consonants.length; i++) {
+            mapper.map('n' + consonants.charAt(i), 'ん' + consonants.charAt(i));
+        }
 
         var elements = getAllElementsWithAttribute("data-ime");
         for (var i = 0; i < elements.length; i++) {
