@@ -13,10 +13,10 @@ var ime = {
         var handleKeyUp = function(e) {
             var target = e.target;
             if (e.keyCode == 8) { // Backspace
-                if (typeof target.dataset.next == 'undefined') {
+                if (typeof target.dataset.next == 'undefined' || e.target.selectionStart != e.target.selectionEnd) {
                     target.dataset.next = '';
                 }
-                if (target.dataset.next != '') {
+                else if (target.dataset.next != '') {
                     target.dataset.next = target.dataset.next.substring(0, target.dataset.next.length - 1);
                 }
             }
