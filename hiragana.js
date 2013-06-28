@@ -97,6 +97,42 @@ var ime = {
                 }
             }
         }
+
+        var handlePaste = function(e) {
+            var text = undefined;
+            if (window.clipboardData && window.clipboardData.getData) { // IE
+                text = window.clipboardData.getData('Text');
+            }
+            else if (e.clipboardData && e.clipboardData.getData) {
+                text = e.clipboardData.getData('text/plain');
+            }
+            e.preventDefault();
+            // Translate pasted text
+            var working = '';
+            for (var i = 0; i < text.length; i++) {
+                if (text.charAt(i) == ' ') {
+                    if (wideSpaces) {
+                        insertAtCursor(e.target, '　');
+                    }
+                    else {
+                        insertAtCursor(e.target, ' ');
+                    }
+                    working = '';
+                }
+                else {
+                    working += text.charAt(i);
+                    var match = mapper.match(working);
+                    if (match != null) {
+                        insertAtCursor(e.target, match);
+                        working = '';
+                    }
+                }
+            }
+            if (working != '') {
+                insertAtCursor(e.target, working);
+            }
+            return false;
+        };
         
         var getAllElementsWithAttribute = function(attribute) {
         var matchingElements = [];
@@ -244,7 +280,7 @@ var ime = {
             if (elements[i].dataset.ime == 'hiragana')
                 elements[i].addEventListener('keypress', handleInput, false);
                 elements[i].addEventListener('keyup', handleKeyUp, false);
+                elements[i].addEventListener('paste', handlePaste, false);
         }
     }
-    
 }
