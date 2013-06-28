@@ -13,15 +13,15 @@ Using hiragana.js is simple:
 1. Add `data-ime="hiragana"` to any element you want the IME to be enabled on.
 2. Run `ime.enable()` from Javascript after the DOM is loaded.
 
-Make sure that you set your character encoding problem on your page! Make this the first
-thing in your `<head>` tag:
+Make sure that you set the character encoding on your page! Make this the first thing in
+your `<head>`:
 
     <meta charset="UTF-8" />
 
 **Before**
 
     <input type="text" />
-    <ktextarea></textarea>
+    <textarea></textarea>
 
 **After**
 
