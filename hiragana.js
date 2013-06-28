@@ -126,7 +126,7 @@ var ime = {
         hiragana["me"] = "め";
         hiragana["mo"] = "も";
         hiragana["ya"] = "や";
-        hiragana["yu"] = "よ";
+        hiragana["yu"] = "ゆ";
         hiragana["yo"] = "よ";
         hiragana["ra"] = "ら";
         hiragana["ri"] = "り";
@@ -207,5 +207,4 @@ var ime = {
                 elements[i].addEventListener('keyup', handleKeyUp, false);
         }
     }
-    
 }
