@@ -207,4 +207,5 @@ var ime = {
                 elements[i].addEventListener('keyup', handleKeyUp, false);
         }
     }
+    
 }
