@@ -65,6 +65,10 @@ var ime = {
 
         var handleInput = function(e) {
             var target = e.target;
+            if(e.ctrlKey) {
+                target.dataset.next = '';
+                return;
+            }
             if (target.selectionStart != target.selectionEnd) {
                 return;
             }
